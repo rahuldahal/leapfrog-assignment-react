@@ -1,11 +1,9 @@
+import Landing from "./Screens/Landing";
+
 function App() {
   return (
-    <div className="App">
-      <h1 className="text-4xl font-bold underline">Wanna Leap?</h1>
-      <p>
-        Leapfrog Technology, Inc. assignment that consumes node.js' CRUD API
-        with React in the frontend.
-      </p>
+    <div className="App p-4 lg:p-0 bg-green-50 text-gray-700">
+      <Landing />
     </div>
   );
 }

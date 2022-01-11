@@ -1,11 +1,27 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Button from "../components/Button";
 import Heading from "../components/Heading";
 import useField from "../hooks/useField";
+import { useSelector, useDispatch } from "react-redux";
+import { signUp } from "../redux/auth/actions";
 
 export default function Landing() {
   const [emailRef, EmailField] = useField("Email Address");
   const [passwordRef, PasswordField] = useField("Password");
+  const { isLoading, isAuthenticated, message } = useSelector((state) => state);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    console.log({ isLoading, isAuthenticated, message });
+  }, [isLoading, isAuthenticated, message]);
+
+  function handleSignUp(e) {
+    e.preventDefault();
+    const email = emailRef.current.value;
+    const password = passwordRef.current.value;
+    console.log({ email, password });
+    dispatch(signUp());
+  }
 
   return (
     <main className="container m-auto h-screen flex items-center justify-around">
@@ -17,7 +33,7 @@ export default function Landing() {
           with <strong className="text-green-500">React</strong> in the
           frontend.
         </p>
-        <form className="mt-12">
+        <form className="mt-12" onSubmit={handleSignUp}>
           <EmailField type="email" placeholder="ram@domain.com" />
           <PasswordField type="password" placeholder="password" />
           <small className="block">Don't have an account? Sign Up</small>

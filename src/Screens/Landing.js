@@ -3,7 +3,7 @@ import Button from "../components/Button";
 import Heading from "../components/Heading";
 import useField from "../hooks/useField";
 import { useSelector, useDispatch } from "react-redux";
-import { signUp } from "../redux/auth/actions";
+import { signUpRequest } from "../redux/auth/actions";
 
 export default function Landing() {
   const [emailRef, EmailField] = useField("Email Address");
@@ -20,7 +20,7 @@ export default function Landing() {
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
     console.log({ email, password });
-    dispatch(signUp());
+    dispatch(signUpRequest({ email, password }));
   }
 
   return (

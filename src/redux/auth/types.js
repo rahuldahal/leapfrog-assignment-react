@@ -1,7 +1,16 @@
 const authTypes = {
-  signUp: "SIGN_UP",
-  signIn: "SIGN_IN",
-  signOut: "SIGN_OUT",
+  signUp: {
+    success: "SIGN_UP_SUCCESS",
+    failure: "SIGN_UP_FAILURE",
+  },
+  signIn: {
+    success: "SIGN_IN_SUCCESS",
+    failure: "SIGN_IN_FAILURE",
+  },
+  signOut: {
+    success: "SIGN_OUT_SUCCESS",
+    failure: "SIGN_OUT_FAILURE",
+  },
 };
 
 export default authTypes;

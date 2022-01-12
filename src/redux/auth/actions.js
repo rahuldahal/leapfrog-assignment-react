@@ -1,7 +1,12 @@
+import { signUp } from "../services/fetch";
 import authTypes from "./types";
 
-export function signUpRequest() {
-  return () => {};
+export function signUpRequest({ username, password }) {
+  return async (dispatch) => {
+    const tokens = await signUp({ username, password });
+    console.log(tokens);
+    dispatch(signUpSuccess(tokens));
+  };
 }
 
 export function signUpSuccess(payload) {

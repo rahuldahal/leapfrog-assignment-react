@@ -9,27 +9,14 @@ const initialState = {
 // TODO: use react-thunk to query the API
 export default function authReducer(state = initialState, action) {
   const { signUp, signIn, signOut } = authTypes;
+  const { payload } = action;
   switch (action.type) {
-    case signUp:
+    case signUp.success:
       return {
         ...state,
         isLoading: false,
         isAuthenticated: true,
-        message: "Your account been created successfully.",
-      };
-    case signIn:
-      return {
-        ...state,
-        isLoading: false,
-        isAuthenticated: true,
-        message: "You have been authenticated successfully.",
-      };
-    case signOut:
-      return {
-        ...state,
-        isLoading: false,
-        isAuthenticated: false,
-        message: "You have been signed out from the application.",
+        message: payload,
       };
     default:
       return state;

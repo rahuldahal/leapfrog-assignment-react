@@ -12,7 +12,8 @@ export async function signUp({ username, password }) {
   try {
     const res = await fetch(endPoint("/signup"), {
       method: "POST",
-      body: { username, password },
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password }),
     });
     const data = await res.json();
     console.log(data);
@@ -26,7 +27,8 @@ export async function signIn({ username, password }) {
   try {
     const res = await fetch(endPoint("/signin"), {
       method: "POST",
-      body: { username, password },
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password }),
     });
     const data = await res.json();
     console.log(data);
@@ -52,9 +54,9 @@ export async function getContacts({ token }) {
 export async function createContact({ name, phone, token }) {
   try {
     const res = await fetch(endPoint("/contacts"), {
-      headers: authHeader(token),
+      headers: { "Content-Type": "application/json", ...authHeader(token) },
       method: "POST",
-      body: { name, phone },
+      body: JSON.stringify({ name, phone }),
     });
     const data = await res.json();
     console.log(data);

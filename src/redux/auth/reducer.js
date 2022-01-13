@@ -8,7 +8,7 @@ const initialState = {
 
 // TODO: use react-thunk to query the API
 export default function authReducer(state = initialState, action) {
-  const { signUp, signIn, signOut } = authTypes;
+  const { signUp } = authTypes;
   const { payload } = action;
   switch (action.type) {
     case signUp.success:

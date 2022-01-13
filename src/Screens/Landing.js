@@ -8,12 +8,16 @@ import { signUpRequest } from "../redux/auth/actions";
 export default function Landing() {
   const [emailRef, EmailField] = useField("Email Address");
   const [passwordRef, PasswordField] = useField("Password");
-  const { isLoading, isAuthenticated, message } = useSelector((state) => state);
+  const { message } = useSelector((state) => state);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log({ isLoading, isAuthenticated, message });
-  }, [isLoading, isAuthenticated, message]);
+    if (message) {
+      const { accessToken, refreshToken } = message;
+      localStorage.setItem("accessToken", JSON.stringify(accessToken));
+      localStorage.setItem("refreshToken", JSON.stringify(refreshToken));
+    }
+  }, [message]);
 
   function handleSignUp(e) {
     e.preventDefault();

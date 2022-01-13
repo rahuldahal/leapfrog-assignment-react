@@ -8,12 +8,12 @@ function authHeader(token) {
   };
 }
 
-export async function signUp({ username, password }) {
+export async function signUp({ email, password }) {
   try {
     const res = await fetch(endPoint("/signup"), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, password }),
+      body: JSON.stringify({ email, password }),
     });
     const data = await res.json();
     console.log(data);
@@ -23,12 +23,12 @@ export async function signUp({ username, password }) {
   }
 }
 
-export async function signIn({ username, password }) {
+export async function signIn({ email, password }) {
   try {
     const res = await fetch(endPoint("/signin"), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, password }),
+      body: JSON.stringify({ email, password }),
     });
     const data = await res.json();
     console.log(data);

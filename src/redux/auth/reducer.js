@@ -16,7 +16,7 @@ export default function authReducer(state = initialState, action) {
         ...state,
         isLoading: false,
         isAuthenticated: true,
-        message: payload,
+        message: payload.message, // backend sends in the form of {message: {}}
       };
     default:
       return state;

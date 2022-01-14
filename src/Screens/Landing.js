@@ -4,18 +4,21 @@ import Heading from "../components/Heading";
 import useField from "../hooks/useField";
 import { useSelector, useDispatch } from "react-redux";
 import { signUpRequest } from "../redux/auth/actions";
+import { useNavigate } from "react-router-dom";
 
-export default function Landing() {
+export default function Landing({ history }) {
   const [emailRef, EmailField] = useField("Email Address");
   const [passwordRef, PasswordField] = useField("Password");
   const { message } = useSelector((state) => state);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (message) {
       const { accessToken, refreshToken } = message;
       localStorage.setItem("accessToken", JSON.stringify(accessToken));
       localStorage.setItem("refreshToken", JSON.stringify(refreshToken));
+      navigate("contacts");
     }
   }, [message]);
 

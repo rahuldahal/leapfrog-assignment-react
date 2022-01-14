@@ -4,6 +4,7 @@ import { Provider as StoreProvider } from "react-redux";
 import store from "./redux/store";
 import Landing from "./Screens/Landing";
 import Contacts from "./Screens/Contacts";
+import ProtectedRoutes from "./components/ProtectedRoutes";
 
 function App() {
   return (
@@ -12,7 +13,9 @@ function App() {
         <div className="App p-4 lg:p-0 bg-green-50 text-gray-700">
           <Routes>
             <Route path="/" element={<Landing />} />
-            <Route path="/contacts" element={<Contacts />} />
+            <Route element={<ProtectedRoutes />}>
+              <Route path="/contacts" element={<Contacts />}></Route>
+            </Route>
           </Routes>
         </div>
       </StoreProvider>

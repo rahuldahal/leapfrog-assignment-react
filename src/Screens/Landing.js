@@ -10,7 +10,7 @@ export default function Landing({ history }) {
   const [formType, setFormType] = useState("signIn");
   const [emailRef, EmailField] = useField("Email Address");
   const [passwordRef, PasswordField] = useField("Password");
-  const { message } = useSelector((state) => state);
+  const { message, error } = useSelector((state) => state);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -19,7 +19,10 @@ export default function Landing({ history }) {
       const { accessToken, refreshToken } = message;
       localStorage.setItem("accessToken", JSON.stringify(accessToken));
       localStorage.setItem("refreshToken", JSON.stringify(refreshToken));
-      navigate("contacts");
+      return navigate("contacts");
+    }
+    if (error) {
+      console.log(error);
     }
   }, [message]);
 

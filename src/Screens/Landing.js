@@ -10,7 +10,7 @@ export default function Landing({ history }) {
   const [formType, setFormType] = useState("signIn");
   const [emailRef, EmailField] = useField("Email Address");
   const [passwordRef, PasswordField] = useField("Password");
-  const { message, error } = useSelector((state) => state);
+  const { message, error } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -24,7 +24,7 @@ export default function Landing({ history }) {
     if (error) {
       console.log(error);
     }
-  }, [message]);
+  }, [message, error]);
 
   function handleFormSubmit(e) {
     e.preventDefault();

@@ -15,9 +15,8 @@ export async function signUp({ email, password }) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
     });
-    const data = await res.json();
-    console.log(data);
-    return data;
+    const { message } = await res.json();
+    return message;
   } catch (error) {
     console.log(error);
   }
@@ -30,9 +29,8 @@ export async function signIn({ email, password }) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
     });
-    const data = await res.json();
-    console.log(data);
-    return data;
+    const { message } = await res.json();
+    return message;
   } catch (error) {
     console.log(error);
   }
@@ -43,9 +41,9 @@ export async function getContacts({ token }) {
     const res = await fetch(endPoint("/contacts"), {
       headers: authHeader(token),
     });
-    const data = await res.json();
-    console.log(data);
-    return data;
+    const { message } = await res.json();
+    console.log(message);
+    return message;
   } catch (error) {
     console.log(error);
   }
@@ -58,9 +56,9 @@ export async function createContact({ name, phone, token }) {
       method: "POST",
       body: JSON.stringify({ name, phone }),
     });
-    const data = await res.json();
-    console.log(data);
-    return data;
+    const { message } = await res.json();
+    console.log(message);
+    return message;
   } catch (error) {
     console.log(error);
   }

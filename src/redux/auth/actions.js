@@ -3,9 +3,12 @@ import authTypes from "./types";
 
 export function signUpRequest({ email, password }) {
   return async (dispatch) => {
-    const tokens = await signUp({ email, password });
-    console.log(tokens);
-    dispatch(signUpSuccess(tokens));
+    const { error, message } = await signUp({ email, password });
+    console.log({ error, message });
+    if (error) {
+      return dispatch(signUpFailure(error));
+    }
+    return dispatch(signUpSuccess(message));
   };
 }
 

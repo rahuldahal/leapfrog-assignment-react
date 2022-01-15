@@ -41,7 +41,7 @@ export default function Contacts() {
       {isLoading ? (
         <p>Loading...</p>
       ) : (
-        <section className="relative w-full">
+        <section className="relative w-full lg:max-w-5xl">
           <Button
             modifier="absolute right-0 -top-16 bg-green-500 text-white"
             onClick={() => setShowAddNewModal(true)}

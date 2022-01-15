@@ -9,10 +9,11 @@ const initialState = {
 
 // TODO: use react-thunk to query the API
 export default function authReducer(state = initialState, action) {
-  const { signUp } = authTypes;
+  const { signUp, signIn } = authTypes;
   const { payload } = action;
   switch (action.type) {
     case signUp.success:
+    case signIn.success:
       return {
         ...state,
         isLoading: false,
@@ -20,6 +21,7 @@ export default function authReducer(state = initialState, action) {
         message: payload,
       };
     case signUp.failure:
+    case signIn.failure:
       return {
         ...state,
         isLoading: false,

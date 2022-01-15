@@ -1,11 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import AddContactForm from "../components/AddContactForm";
 import Button from "../components/Button";
 import ContactsTable from "../components/ContactsTable";
 import Heading from "../components/Heading";
+import Modal from "../Modal";
 import { getAllRequest } from "../redux/contacts/actions";
 
 export default function Contacts() {
+  const [showAddNewModal, setShowAddNewModal] = useState(false);
   const dispatch = useDispatch();
   const { isLoading, error, contacts } = useSelector((state) => state.contacts);
   useEffect(() => {
@@ -13,6 +16,20 @@ export default function Contacts() {
     const parsedToken = JSON.parse(accessToken);
     dispatch(getAllRequest({ token: parsedToken }));
   }, []);
+
+  function hideModalOnEscapePress(e) {
+    if (e.key === "Escape") {
+      setShowAddNewModal(false);
+    }
+  }
+
+  useEffect(() => {
+    if (showAddNewModal) {
+      window.addEventListener("keyup", hideModalOnEscapePress);
+    } else {
+      window.removeEventListener("keyup", hideModalOnEscapePress);
+    }
+  }, [showAddNewModal]);
 
   useEffect(() => {
     console.log({ error, contacts });
@@ -25,7 +42,10 @@ export default function Contacts() {
         <p>Loading...</p>
       ) : (
         <section className="relative w-full">
-          <Button modifier="absolute right-0 -top-16 bg-green-500 text-white">
+          <Button
+            modifier="absolute right-0 -top-16 bg-green-500 text-white"
+            onClick={() => setShowAddNewModal(true)}
+          >
             Add new
           </Button>
           <ContactsTable
@@ -34,6 +54,11 @@ export default function Contacts() {
           />
         </section>
       )}
+      {showAddNewModal ? (
+        <Modal>
+          <AddContactForm />
+        </Modal>
+      ) : null}
     </main>
   );
 }

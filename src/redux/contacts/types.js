@@ -7,13 +7,13 @@ const contactsTypes = {
     success: "NEW_CONTACT_SUCCESS",
     failure: "NEW_CONTACT_FAILURE",
   },
-  update: {
-    success: "UPDATE_SUCCESS",
-    failure: "UPDATE_FAILURE",
+  updateContact: {
+    success: "UPDATE_CONTACT_SUCCESS",
+    failure: "UPDATE_CONTACT_FAILURE",
   },
-  delete: {
-    success: "DELETE_SUCCESS",
-    failure: "DELETE_FAILURE",
+  deleteContact: {
+    success: "DELETE_CONTACT_SUCCESS",
+    failure: "DELETE_CONTACT_FAILURE",
   },
 };
 

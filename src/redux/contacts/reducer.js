@@ -7,11 +7,12 @@ const initialState = {
 };
 
 export default function contactsReducer(state = initialState, action) {
-  const { getAll, newContact } = contactsTypes;
+  const { getAll, newContact, deleteContact } = contactsTypes;
   const { payload } = action;
   switch (action.type) {
     case getAll.success:
     case newContact.success:
+    case deleteContact.success:
       return {
         ...state,
         isLoading: false,
@@ -19,6 +20,7 @@ export default function contactsReducer(state = initialState, action) {
       };
     case getAll.failure:
     case newContact.failure:
+    case deleteContact.failure:
       return {
         ...state,
         isLoading: false,

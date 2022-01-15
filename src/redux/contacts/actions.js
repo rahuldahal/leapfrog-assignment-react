@@ -1,4 +1,4 @@
-import { createContact, getContacts } from "../services/fetch";
+import { createContact, deleteContact, getContacts } from "../services/fetch";
 import contactsTypes from "./types";
 
 export function getAllRequest({ token }) {
@@ -46,6 +46,31 @@ export function newContactSuccess(payload) {
 export function newContactFailure(error) {
   return {
     type: contactsTypes.newContact.failure,
+    payload: error,
+  };
+}
+
+export function deleteContactRequest({ _id, token }) {
+  return async (dispatch) => {
+    const message = await deleteContact({ _id, token });
+    const { error } = message;
+    if (error) {
+      return dispatch(deleteContactFailure(error));
+    }
+    return dispatch(deleteContactSuccess(message));
+  };
+}
+
+export function deleteContactSuccess(payload) {
+  return {
+    type: contactsTypes.deleteContact.success,
+    payload,
+  };
+}
+
+export function deleteContactFailure(error) {
+  return {
+    type: contactsTypes.deleteContact.failure,
     payload: error,
   };
 }

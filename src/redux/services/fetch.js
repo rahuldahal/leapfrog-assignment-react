@@ -63,3 +63,17 @@ export async function createContact({ name, phone, token }) {
     console.log(error);
   }
 }
+
+export async function deleteContact({ _id, token }) {
+  try {
+    const res = await fetch(endPoint(`/contacts/${_id}`), {
+      headers: { "Content-Type": "application/json", ...authHeader(token) },
+      method: "DELETE",
+    });
+    const { message } = await res.json();
+    console.log(message);
+    return message;
+  } catch (error) {
+    console.log(error);
+  }
+}

@@ -3,6 +3,7 @@ import authTypes from "./types";
 const initialState = {
   isLoading: true,
   isAuthenticated: false,
+  error: null,
   message: null,
 };
 
@@ -16,7 +17,15 @@ export default function authReducer(state = initialState, action) {
         ...state,
         isLoading: false,
         isAuthenticated: true,
-        message: payload.message, // backend sends in the form of {message: {}}
+        message: payload,
+      };
+    case signUp.failure:
+      return {
+        ...state,
+        isLoading: false,
+        isAuthenticated: false,
+        message: null,
+        error: payload,
       };
     default:
       return state;

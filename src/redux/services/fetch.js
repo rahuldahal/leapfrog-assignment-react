@@ -64,6 +64,21 @@ export async function createContact({ name, phone, token }) {
   }
 }
 
+export async function updateContact({ _id, name, phone, photograph, token }) {
+  try {
+    const res = await fetch(endPoint(`/contacts/${_id}`), {
+      headers: { "Content-Type": "application/json", ...authHeader(token) },
+      method: "PUT",
+      body: JSON.stringify({ name, phone }),
+    });
+    const { message } = await res.json();
+    console.log(message);
+    return message;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export async function deleteContact({ _id, token }) {
   try {
     const res = await fetch(endPoint(`/contacts/${_id}`), {

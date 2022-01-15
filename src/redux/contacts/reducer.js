@@ -14,7 +14,7 @@ export default function contactsReducer(state = initialState, action) {
       return {
         ...state,
         isLoading: false,
-        contacts: payload,
+        contacts: payload.contacts,
       };
     case getAll.failure:
       return {

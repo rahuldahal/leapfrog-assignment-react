@@ -1,4 +1,4 @@
-import { signUp } from "../services/fetch";
+import { signIn, signUp } from "../services/fetch";
 import authTypes from "./types";
 
 export function signUpRequest({ email, password }) {
@@ -26,8 +26,15 @@ export function signUpFailure(error) {
   };
 }
 
-export function signInRequest() {
-  return () => {};
+export function signInRequest({ email, password }) {
+  return async (dispatch) => {
+    const { error, message } = await signIn({ email, password });
+    console.log({ error, message });
+    if (error) {
+      return dispatch(signInFailure(error));
+    }
+    return dispatch(signInSuccess(message));
+  };
 }
 
 export function signInSuccess(payload) {

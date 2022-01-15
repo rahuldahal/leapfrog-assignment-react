@@ -1,5 +1,10 @@
-import { applyMiddleware, createStore } from "redux";
+import { applyMiddleware, combineReducers, createStore } from "redux";
 import reduxThunk from "redux-thunk";
 import authReducer from "./auth/reducer";
+import contactsReducer from "./contacts/reducer";
 
-export default createStore(authReducer, applyMiddleware(reduxThunk));
+const rootReducer = combineReducers({
+  auth: authReducer,
+  contacts: contactsReducer,
+});
+export default createStore(rootReducer, applyMiddleware(reduxThunk));

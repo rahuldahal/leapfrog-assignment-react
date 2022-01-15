@@ -1,12 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "../components/Button";
 import Heading from "../components/Heading";
 import useField from "../hooks/useField";
 import { useSelector, useDispatch } from "react-redux";
-import { signUpRequest } from "../redux/auth/actions";
+import { signInRequest, signUpRequest } from "../redux/auth/actions";
 import { useNavigate } from "react-router-dom";
 
 export default function Landing({ history }) {
+  const [formType, setFormType] = useState("signIn");
   const [emailRef, EmailField] = useField("Email Address");
   const [passwordRef, PasswordField] = useField("Password");
   const { message } = useSelector((state) => state);
@@ -22,12 +23,34 @@ export default function Landing({ history }) {
     }
   }, [message]);
 
-  function handleSignUp(e) {
+  function handleFormSubmit(e) {
     e.preventDefault();
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
     console.log({ email, password });
-    dispatch(signUpRequest({ email, password }));
+    formType === "signIn"
+      ? dispatch(signInRequest({ email, password }))
+      : dispatch(signUpRequest({ email, password }));
+  }
+
+  function FormTypeToggler() {
+    const contextLabel =
+      formType === "signIn"
+        ? "Don't have an account?"
+        : "Already have an account?";
+
+    const textLabel = formType === "signIn" ? "Sign Up" : "Sign In";
+    return (
+      <small className="block">
+        {contextLabel}
+        <span
+          onClick={() =>
+            setFormType(formType === "signIn" ? "signUp" : "signIn")
+          }
+          className="underline cursor-pointer"
+        >{` ${textLabel}`}</span>
+      </small>
+    );
   }
 
   return (
@@ -40,15 +63,15 @@ export default function Landing({ history }) {
           with <strong className="text-green-500">React</strong> in the
           frontend.
         </p>
-        <form className="mt-12" onSubmit={handleSignUp}>
+        <form className="mt-12" onSubmit={handleFormSubmit}>
           <EmailField type="email" placeholder="ram@domain.com" />
           <PasswordField type="password" placeholder="password" />
-          <small className="block">Don't have an account? Sign Up</small>
+          <FormTypeToggler />
           <Button
             modifier="mt-5 bg-green-500 hover:bg-green-700 shadow-xl text-white"
             type="submit"
           >
-            Sign In
+            {formType === "signIn" ? "Sign In" : "Sign Up"}
           </Button>
         </form>
       </section>

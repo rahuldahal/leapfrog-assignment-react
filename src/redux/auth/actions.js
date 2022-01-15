@@ -3,8 +3,8 @@ import authTypes from "./types";
 
 export function signUpRequest({ email, password }) {
   return async (dispatch) => {
-    const { error, message } = await signUp({ email, password });
-    console.log({ error, message });
+    const message = await signUp({ email, password });
+    const { error } = message;
     if (error) {
       return dispatch(signUpFailure(error));
     }
@@ -28,8 +28,8 @@ export function signUpFailure(error) {
 
 export function signInRequest({ email, password }) {
   return async (dispatch) => {
-    const { error, message } = await signIn({ email, password });
-    console.log({ error, message });
+    const message = await signIn({ email, password });
+    const { error } = message;
     if (error) {
       return dispatch(signInFailure(error));
     }

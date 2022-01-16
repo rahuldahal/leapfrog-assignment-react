@@ -6,21 +6,51 @@ import {
   updateContactRequest,
 } from "../redux/contacts/actions";
 import Button from "./Button";
+import PhotoUpload from "./PhotoUpload";
 
 export default function AddContactForm({ data = {} }) {
   const { _id, name: initialName, phone: initialPhone } = data;
   const [nameRef, NameField] = useField("Full Name");
   const [phoneRef, PhoneField] = useField("Phone Number");
-  const [photographRef, PhotographField] = useField("Photograph URL");
+  const [fileInputState, setFileInputState = {}] = useState("");
+  const [previewSource, setPreviewSource] = useState("");
+  const [selectedFile, setSelectedFile] = useState();
+  const [base64EncodedImage, setBase64EncodedImage] = useState("");
   const dispatch = useDispatch();
   const [isDataProvided] = useState(Object.keys(data).length > 0);
+
+  function handleFileInputChange(e) {
+    const file = e.target.files[0];
+    setSelectedFile(file);
+    setFileInputState(e.target.value);
+  }
+
+  const uploadImage = async (base64EncodedImage) => {
+    try {
+      console.log(base64EncodedImage);
+      setBase64EncodedImage(base64EncodedImage);
+      setFileInputState("");
+      setPreviewSource("");
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   function handleFormSubmit(e) {
     e.preventDefault();
     const name = nameRef.current.value;
     const phone = phoneRef.current.value;
-    const photograph = photographRef.current.value;
-    console.log({ name, phone, photograph });
+
+    // image handler
+    if (!selectedFile) return;
+    const reader = new FileReader();
+    reader.readAsDataURL(selectedFile);
+    reader.onloadend = () => {
+      uploadImage(reader.result);
+    };
+    reader.onerror = () => {
+      console.error("AHHHHHHHH!!");
+    };
     const accessToken = localStorage.getItem("accessToken");
     const parsedToken = JSON.parse(accessToken);
     if (isDataProvided) {
@@ -29,13 +59,18 @@ export default function AddContactForm({ data = {} }) {
           _id,
           name,
           phone,
-          photograph,
+          photograph: base64EncodedImage,
           token: parsedToken,
         })
       );
     }
     return dispatch(
-      newContactRequest({ name, phone, photograph, token: parsedToken })
+      newContactRequest({
+        name,
+        phone,
+        photograph: base64EncodedImage,
+        token: parsedToken,
+      })
     );
   }
   return (
@@ -49,7 +84,11 @@ export default function AddContactForm({ data = {} }) {
         placeholder="10 digits phone number"
         value={initialPhone}
       />
-      <PhotographField type="file" value="" />
+      <PhotoUpload
+        fileInputState={fileInputState}
+        handleFileInputChange={handleFileInputChange}
+        previewSource={previewSource}
+      />
       <Button type="submit" modifier="bg-green-500 text-white">
         {isDataProvided ? "Update" : "Add"}
       </Button>

@@ -32,6 +32,7 @@ export function getAllFailure(error) {
 }
 
 export function newContactRequest({ name, phone, photograph, token }) {
+  console.log({ photograph });
   return async (dispatch) => {
     const message = await createContact({ name, phone, photograph, token });
     const { error } = message;

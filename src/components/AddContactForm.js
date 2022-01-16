@@ -21,13 +21,19 @@ export default function AddContactForm({ data = {} }) {
   const dispatch = useDispatch();
   const [isDataProvided] = useState(Object.keys(data).length > 0);
 
+  useEffect(() => {
+    if (base64EncodedImage) {
+      sendRequestToServer();
+    }
+  }, [base64EncodedImage]);
+
   function handleFileInputChange(e) {
     const file = e.target.files[0];
     setSelectedFile(file);
     setFileInputState(e.target.value);
   }
 
-  async function uploadImage(base64EncodedImage) {
+  function uploadImage(base64EncodedImage) {
     try {
       console.log(base64EncodedImage);
       setBase64EncodedImage(base64EncodedImage);
@@ -38,21 +44,9 @@ export default function AddContactForm({ data = {} }) {
     }
   }
 
-  function handleFormSubmit(e) {
-    e.preventDefault();
+  function sendRequestToServer() {
     const name = nameRef.current.value;
     const phone = phoneRef.current.value;
-
-    // image handler
-    if (!selectedFile) return;
-    const reader = new FileReader();
-    reader.readAsDataURL(selectedFile);
-    reader.onloadend = () => {
-      uploadImage(reader.result);
-    };
-    reader.onerror = () => {
-      console.error("AHHHHHHHH!!");
-    };
     const accessToken = localStorage.getItem("accessToken");
     const parsedToken = JSON.parse(accessToken);
 
@@ -75,6 +69,20 @@ export default function AddContactForm({ data = {} }) {
         token: parsedToken,
       })
     );
+  }
+
+  function handleFormSubmit(e) {
+    e.preventDefault();
+    // image handler
+    if (!selectedFile) return;
+    const reader = new FileReader();
+    reader.readAsDataURL(selectedFile);
+    reader.onloadend = () => {
+      uploadImage(reader.result);
+    };
+    reader.onerror = () => {
+      console.error("AHHHHHHHH!!");
+    };
   }
   return (
     <form

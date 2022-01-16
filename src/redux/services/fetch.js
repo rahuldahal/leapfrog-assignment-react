@@ -49,12 +49,12 @@ export async function getContacts({ token }) {
   }
 }
 
-export async function createContact({ name, phone, token }) {
+export async function createContact({ name, phone, photograph, token }) {
   try {
     const res = await fetch(endPoint("/contacts"), {
       headers: { "Content-Type": "application/json", ...authHeader(token) },
       method: "POST",
-      body: JSON.stringify({ name, phone }),
+      body: JSON.stringify({ name, phone, photograph }),
     });
     const { message } = await res.json();
     console.log(message);

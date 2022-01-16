@@ -15,7 +15,7 @@ export default function Contacts() {
     const accessToken = localStorage.getItem("accessToken");
     const parsedToken = JSON.parse(accessToken);
     dispatch(getAllRequest({ token: parsedToken }));
-  }, []);
+  }, [dispatch]);
 
   function hideModalOnEscapePress(e) {
     if (e.key === "Escape") {

@@ -24,7 +24,7 @@ export default function Landing({ history }) {
     if (error) {
       console.log(error);
     }
-  }, [message, error]);
+  }, [message, error, navigate]);
 
   function handleFormSubmit(e) {
     e.preventDefault();

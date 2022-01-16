@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import AddContactForm from "../components/AddContactForm";
 import Button from "../components/Button";
 import ContactsTable from "../components/ContactsTable";
+import FlashMessage from "../components/FlashMessage";
 import Heading from "../components/Heading";
 import Modal from "../Modal";
 import { getAllRequest } from "../redux/contacts/actions";
@@ -11,11 +12,19 @@ export default function Contacts() {
   const [showAddNewModal, setShowAddNewModal] = useState(false);
   const dispatch = useDispatch();
   const { isLoading, error, contacts } = useSelector((state) => state.contacts);
+  const [flashMessage, setFlashMessage] = useState(null);
+
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
     const parsedToken = JSON.parse(accessToken);
     dispatch(getAllRequest({ token: parsedToken }));
   }, [dispatch]);
+
+  useEffect(() => {
+    if (flashMessage) {
+      setTimeout(() => setFlashMessage(null), 3000);
+    }
+  }, [flashMessage]);
 
   function hideModalOnEscapePress(e) {
     if (e.key === "Escape") {
@@ -30,10 +39,6 @@ export default function Contacts() {
       window.removeEventListener("keyup", hideModalOnEscapePress);
     }
   }, [showAddNewModal]);
-
-  useEffect(() => {
-    console.log({ error, contacts });
-  }, [error, contacts]);
 
   return (
     <main className="container m-auto h-screen flex flex-col items-center justify-center">
@@ -51,12 +56,22 @@ export default function Contacts() {
           <ContactsTable
             headings={["Name", "Phone", "Actions"]}
             contacts={contacts}
+            setFlashMessage={setFlashMessage}
           />
         </section>
       )}
       {showAddNewModal ? (
         <Modal>
-          <AddContactForm />
+          <AddContactForm setFlashMessage={setFlashMessage} />
+        </Modal>
+      ) : null}
+
+      {flashMessage ? (
+        <Modal transparent>
+          <FlashMessage
+            type={flashMessage.type}
+            message={flashMessage.message}
+          />
         </Modal>
       ) : null}
     </main>

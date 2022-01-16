@@ -5,7 +5,7 @@ import { deleteContactRequest } from "../redux/contacts/actions";
 import AddContactForm from "./AddContactForm";
 import Button from "./Button";
 
-export default function ContactsTable({ headings, contacts }) {
+export default function ContactsTable({ headings, contacts, setFlashMessage }) {
   const dispatch = useDispatch();
   const [updateContactModalData, setUpdateContactModalData] = useState(null);
 
@@ -27,6 +27,10 @@ export default function ContactsTable({ headings, contacts }) {
     const accessToken = localStorage.getItem("accessToken");
     const parsedToken = JSON.parse(accessToken);
     dispatch(deleteContactRequest({ _id, token: parsedToken }));
+    setFlashMessage({
+      type: "success",
+      message: "The contact has been deleted successfully",
+    });
   }
 
   function TableHeading({ label }) {
@@ -103,7 +107,10 @@ export default function ContactsTable({ headings, contacts }) {
 
       {updateContactModalData ? (
         <Modal>
-          <AddContactForm data={updateContactModalData} />
+          <AddContactForm
+            data={updateContactModalData}
+            setFlashMessage={setFlashMessage}
+          />
         </Modal>
       ) : null}
     </>

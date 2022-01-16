@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import useField from "../hooks/useField";
 import {
@@ -13,6 +13,7 @@ export default function AddContactForm({ data = {} }) {
   const [phoneRef, PhoneField] = useField("Phone Number");
   const [photographRef, PhotographField] = useField("Photograph URL");
   const dispatch = useDispatch();
+  const [isDataProvided] = useState(Object.keys(data).length > 0);
 
   function handleFormSubmit(e) {
     e.preventDefault();
@@ -22,7 +23,7 @@ export default function AddContactForm({ data = {} }) {
     console.log({ name, phone, photograph });
     const accessToken = localStorage.getItem("accessToken");
     const parsedToken = JSON.parse(accessToken);
-    if (Object.keys(data).length > 0) {
+    if (isDataProvided) {
       return dispatch(
         updateContactRequest({
           _id,
@@ -50,7 +51,7 @@ export default function AddContactForm({ data = {} }) {
       />
       <PhotographField type="file" value="" />
       <Button type="submit" modifier="bg-green-500 text-white">
-        {data ? "Update" : "Add"}
+        {isDataProvided ? "Update" : "Add"}
       </Button>
     </form>
   );

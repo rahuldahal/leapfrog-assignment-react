@@ -15,6 +15,20 @@ export default function Contacts() {
   const [flashMessage, setFlashMessage] = useState(null);
 
   useEffect(() => {
+    if (error) {
+      setFlashMessage({
+        type: "error",
+        message: error,
+      });
+    } else {
+      setFlashMessage({
+        type: "success",
+        message: "The contacts have been loaded",
+      });
+    }
+  }, [error]);
+
+  useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
     const parsedToken = JSON.parse(accessToken);
     dispatch(getAllRequest({ token: parsedToken }));

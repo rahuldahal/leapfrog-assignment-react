@@ -13,31 +13,34 @@ export default function AddContactForm({ data = {}, setFlashMessage }) {
   const [phoneRef, PhoneField] = useField("Phone Number");
   const [photographRef, PhotographField] = useField("Photograph URL");
   const { isLoading, error, contacts } = useSelector((state) => state.contacts);
+  const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const dispatch = useDispatch();
   const [isDataProvided] = useState(Object.keys(data).length > 0);
 
   useEffect(() => {
-    if (!isLoading && !error && !isDataProvided) {
-      setFlashMessage({
-        type: "success",
-        message: "The conatct has been added!",
-      });
+    if (isFormSubmitted) {
+      if (!isLoading && !error && !isDataProvided) {
+        setFlashMessage({
+          type: "success",
+          message: "The conatct has been added!",
+        });
+      }
+      if (!isLoading && !error && isDataProvided) {
+        setFlashMessage({
+          type: "success",
+          message: "The conatct has been updated!",
+        });
+      }
+      if (!isLoading && error) {
+        setFlashMessage({
+          type: "error",
+          message: error,
+        });
+      }
     }
-    if (!isLoading && !error && isDataProvided) {
-      setFlashMessage({
-        type: "success",
-        message: "The conatct has been updated!",
-      });
-    }
-    if (!isLoading && error) {
-      setFlashMessage({
-        type: "error",
-        message: error,
-      });
-    }
-  }, [isLoading, isDataProvided, error, setFlashMessage]);
+  }, [isLoading, isDataProvided, error, setFlashMessage, isFormSubmitted]);
 
-  function handleFormSubmit(e) {
+  async function handleFormSubmit(e) {
     e.preventDefault();
     const name = nameRef.current.value;
     const phone = phoneRef.current.value;
@@ -47,7 +50,7 @@ export default function AddContactForm({ data = {}, setFlashMessage }) {
     const parsedToken = JSON.parse(accessToken);
 
     if (isDataProvided) {
-      dispatch(
+      await dispatch(
         updateContactRequest({
           _id,
           name,
@@ -57,10 +60,11 @@ export default function AddContactForm({ data = {}, setFlashMessage }) {
         })
       );
     } else {
-      dispatch(
+      await dispatch(
         newContactRequest({ name, phone, photograph, token: parsedToken })
       );
     }
+    setIsFormSubmitted(true);
   }
   return (
     <form

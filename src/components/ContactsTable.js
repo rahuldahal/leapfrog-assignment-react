@@ -23,10 +23,10 @@ export default function ContactsTable({ headings, contacts, setFlashMessage }) {
     }
   }, [updateContactModalData]);
 
-  function handleDelete(_id) {
+  async function handleDelete(_id) {
     const accessToken = localStorage.getItem("accessToken");
     const parsedToken = JSON.parse(accessToken);
-    dispatch(deleteContactRequest({ _id, token: parsedToken }));
+    await dispatch(deleteContactRequest({ _id, token: parsedToken }));
     setFlashMessage({
       type: "success",
       message: "The contact has been deleted successfully",

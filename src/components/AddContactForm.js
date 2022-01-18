@@ -12,7 +12,7 @@ export default function AddContactForm({ data = {}, setFlashMessage }) {
   const [nameRef, NameField] = useField("Full Name");
   const [phoneRef, PhoneField] = useField("Phone Number");
   const [photographRef, PhotographField] = useField("Photograph URL");
-  const { isLoading, error, contacts } = useSelector((state) => state.contacts);
+  const { isLoading, error } = useSelector((state) => state.contacts);
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const dispatch = useDispatch();
   const [isDataProvided] = useState(Object.keys(data).length > 0);

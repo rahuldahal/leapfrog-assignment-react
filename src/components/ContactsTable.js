@@ -57,8 +57,11 @@ export default function ContactsTable({ headings, contacts, setFlashMessage }) {
             {contacts.map((contact) => {
               const { _id, name, phone, photograph } = contact;
               return (
-                <tr key={_id}>
-                  <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                <tr
+                  className="bg-white border-b border-gray-200 last:border-none"
+                  key={_id}
+                >
+                  <td className="px-5 py-5 bg-white text-sm">
                     <div className="flex items-center">
                       <div className="flex-shrink-0 w-10 h-10">
                         <img
@@ -74,10 +77,10 @@ export default function ContactsTable({ headings, contacts, setFlashMessage }) {
                       </div>
                     </div>
                   </td>
-                  <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                  <td className="px-5 py-5 bg-white text-sm">
                     <p className="text-gray-900 whitespace-no-wrap">{phone}</p>
                   </td>
-                  <td className="flex justify-between px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                  <td className="flex max-w-sm m-auto justify-between px-5 py-5 bg-white text-sm">
                     <Button
                       modifier="bg-blue-400 text-white"
                       onClick={() =>

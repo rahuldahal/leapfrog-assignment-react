@@ -4,7 +4,8 @@ const initialState = {
   isLoading: true,
   isAuthenticated: false,
   error: null,
-  message: null,
+  accessToken: null,
+  refreshToken: null,
 };
 
 // TODO: use react-thunk to query the API
@@ -18,7 +19,8 @@ export default function authReducer(state = initialState, action) {
         ...state,
         isLoading: false,
         isAuthenticated: true,
-        message: payload,
+        accessToken: payload.accessToken,
+        refreshToken: payload.refreshToken,
       };
     case signUp.failure:
     case signIn.failure:
@@ -26,7 +28,6 @@ export default function authReducer(state = initialState, action) {
         ...state,
         isLoading: false,
         isAuthenticated: false,
-        message: null,
         error: payload,
       };
     default:

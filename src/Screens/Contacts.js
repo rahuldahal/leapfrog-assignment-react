@@ -11,6 +11,7 @@ import { getAllRequest } from "../redux/contacts/actions";
 export default function Contacts() {
   const [showAddNewModal, setShowAddNewModal] = useState(false);
   const dispatch = useDispatch();
+  const { accessToken } = useSelector((state) => state.auth);
   const { isLoading, error, contacts } = useSelector((state) => state.contacts);
   const [flashMessage, setFlashMessage] = useState(null);
 
@@ -29,10 +30,8 @@ export default function Contacts() {
   }, [error]);
 
   useEffect(() => {
-    const accessToken = localStorage.getItem("accessToken");
-    const parsedToken = JSON.parse(accessToken);
-    dispatch(getAllRequest({ accessToken: parsedToken }));
-  }, [dispatch]);
+    dispatch(getAllRequest({ accessToken }));
+  }, [dispatch, accessToken]);
 
   useEffect(() => {
     if (flashMessage) {

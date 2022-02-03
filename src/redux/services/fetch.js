@@ -2,9 +2,9 @@ function endPoint(path) {
   return `${process.env.REACT_APP_API_END_POINT}${path}`;
 }
 
-function authHeader(token) {
+function authHeader(accessToken) {
   return {
-    Authorization: `Bearer ${token}`,
+    Authorization: `Bearer ${accessToken}`,
   };
 }
 
@@ -36,10 +36,10 @@ export async function signIn({ email, password }) {
   }
 }
 
-export async function getContacts({ token }) {
+export async function getContacts({ accessToken }) {
   try {
     const res = await fetch(endPoint("/contacts"), {
-      headers: authHeader(token),
+      headers: authHeader(accessToken),
     });
     const { message } = await res.json();
     console.log(message);
@@ -49,10 +49,13 @@ export async function getContacts({ token }) {
   }
 }
 
-export async function createContact({ name, phone, token }) {
+export async function createContact({ name, phone, accessToken }) {
   try {
     const res = await fetch(endPoint("/contacts"), {
-      headers: { "Content-Type": "application/json", ...authHeader(token) },
+      headers: {
+        "Content-Type": "application/json",
+        ...authHeader(accessToken),
+      },
       method: "POST",
       body: JSON.stringify({ name, phone }),
     });
@@ -64,10 +67,19 @@ export async function createContact({ name, phone, token }) {
   }
 }
 
-export async function updateContact({ _id, name, phone, photograph, token }) {
+export async function updateContact({
+  _id,
+  name,
+  phone,
+  photograph,
+  accessToken,
+}) {
   try {
     const res = await fetch(endPoint(`/contacts/${_id}`), {
-      headers: { "Content-Type": "application/json", ...authHeader(token) },
+      headers: {
+        "Content-Type": "application/json",
+        ...authHeader(accessToken),
+      },
       method: "PUT",
       body: JSON.stringify({ name, phone }),
     });
@@ -79,10 +91,13 @@ export async function updateContact({ _id, name, phone, photograph, token }) {
   }
 }
 
-export async function deleteContact({ _id, token }) {
+export async function deleteContact({ _id, accessToken }) {
   try {
     const res = await fetch(endPoint(`/contacts/${_id}`), {
-      headers: { "Content-Type": "application/json", ...authHeader(token) },
+      headers: {
+        "Content-Type": "application/json",
+        ...authHeader(accessToken),
+      },
       method: "DELETE",
     });
     const { message } = await res.json();

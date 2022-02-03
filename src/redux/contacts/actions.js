@@ -6,9 +6,9 @@ import {
 } from "../services/fetch";
 import contactsTypes from "./types";
 
-export function getAllRequest({ token }) {
+export function getAllRequest({ accessToken }) {
   return async (dispatch) => {
-    const message = await getContacts({ token });
+    const message = await getContacts({ accessToken });
     const { error } = message;
     if (error) {
       return dispatch(getAllFailure(error));
@@ -31,9 +31,14 @@ export function getAllFailure(error) {
   };
 }
 
-export function newContactRequest({ name, phone, photograph, token }) {
+export function newContactRequest({ name, phone, photograph, accessToken }) {
   return async (dispatch) => {
-    const message = await createContact({ name, phone, photograph, token });
+    const message = await createContact({
+      name,
+      phone,
+      photograph,
+      accessToken,
+    });
     const { error } = message;
     if (error) {
       return dispatch(newContactFailure(error));
@@ -56,14 +61,20 @@ export function newContactFailure(error) {
   };
 }
 
-export function updateContactRequest({ _id, name, phone, photograph, token }) {
+export function updateContactRequest({
+  _id,
+  name,
+  phone,
+  photograph,
+  accessToken,
+}) {
   return async (dispatch) => {
     const message = await updateContact({
       _id,
       name,
       phone,
       photograph,
-      token,
+      accessToken,
     });
     const { error } = message;
     if (error) {
@@ -87,9 +98,9 @@ export function updateContactFailure(error) {
   };
 }
 
-export function deleteContactRequest({ _id, token }) {
+export function deleteContactRequest({ _id, accessToken }) {
   return async (dispatch) => {
-    const message = await deleteContact({ _id, token });
+    const message = await deleteContact({ _id, accessToken });
     const { error } = message;
     if (error) {
       return dispatch(deleteContactFailure(error));

@@ -31,7 +31,7 @@ export default function Contacts() {
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
     const parsedToken = JSON.parse(accessToken);
-    dispatch(getAllRequest({ token: parsedToken }));
+    dispatch(getAllRequest({ accessToken: parsedToken }));
   }, [dispatch]);
 
   useEffect(() => {

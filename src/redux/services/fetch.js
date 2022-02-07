@@ -8,6 +8,18 @@ function authHeader(accessToken) {
   };
 }
 
+export async function checkAuthStatusRequest({ accessToken }) {
+  try {
+    const responseForAccessToken = await fetch(endPoint("/auth"), {
+      headers: authHeader(accessToken),
+    });
+    const { status } = responseForAccessToken;
+    return status;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export async function signUp({ email, password }) {
   try {
     const res = await fetch(endPoint("/signup"), {

@@ -1,5 +1,32 @@
-import { signIn, signUp } from "../services/fetch";
+import { checkAuthStatusRequest, signIn, signUp } from "../services/fetch";
 import authTypes from "./types";
+
+export function checkAuthStatus({ accessToken }) {
+  return async (dispatch) => {
+    const status = await checkAuthStatusRequest({ accessToken });
+    console.log({ status });
+    if (status === 200) {
+      return dispatch(checkAuthStatusSuccess("success"));
+    }
+    return dispatch(checkAuthStatusFailure("error"));
+  };
+}
+
+function checkAuthStatusSuccess(payload) {
+  console.log({ payload });
+  return {
+    type: authTypes.status.success,
+    payload: {},
+  };
+}
+
+function checkAuthStatusFailure(error) {
+  console.log({ error });
+  return {
+    type: authTypes.status.failure,
+    payload: error,
+  };
+}
 
 export function signUpRequest({ email, password }) {
   return async (dispatch) => {

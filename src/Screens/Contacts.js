@@ -30,7 +30,11 @@ export default function Contacts() {
   }, [error]);
 
   useEffect(() => {
-    dispatch(getAllRequest({ accessToken }));
+    try {
+      dispatch(getAllRequest({ accessToken }));
+    } catch (error) {
+      console.log(error.message);
+    }
   }, [dispatch, accessToken]);
 
   useEffect(() => {

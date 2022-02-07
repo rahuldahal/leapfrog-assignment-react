@@ -3,7 +3,11 @@ import Button from "../components/Button";
 import Heading from "../components/Heading";
 import useField from "../hooks/useField";
 import { useSelector, useDispatch } from "react-redux";
-import { signInRequest, signUpRequest } from "../redux/auth/actions";
+import {
+  checkAuthStatus,
+  signInRequest,
+  signUpRequest,
+} from "../redux/auth/actions";
 import { useNavigate } from "react-router-dom";
 import Modal from "../Modal";
 import FlashMessage from "../components/FlashMessage";
@@ -12,10 +16,25 @@ export default function Landing({ history }) {
   const [formType, setFormType] = useState("signIn");
   const [emailRef, EmailField] = useField("Email Address");
   const [passwordRef, PasswordField] = useField("Password");
-  const { accessToken, error } = useSelector((state) => state.auth);
+  const { isAuthenticated, accessToken, error } = useSelector(
+    (state) => state.auth
+  );
   const [flashMessage, setFlashMessage] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log(accessToken);
+    try {
+      accessToken && dispatch(checkAuthStatus({ accessToken }));
+    } catch (error) {
+      console.log(error.message);
+    }
+  }, [accessToken, dispatch]);
+
+  useEffect(() => {
+    isAuthenticated && navigate("contacts");
+  }, [isAuthenticated, navigate]);
 
   useEffect(() => {
     if (flashMessage) {
@@ -24,8 +43,8 @@ export default function Landing({ history }) {
   }, [flashMessage]);
 
   useEffect(() => {
-    if (accessToken) {
-      localStorage.setItem("accessToken", JSON.stringify(accessToken));
+    if (isAuthenticated) {
+      localStorage.setItem("accessToken", accessToken);
       return navigate("contacts");
     }
     if (error) {
@@ -35,7 +54,7 @@ export default function Landing({ history }) {
         message: error,
       });
     }
-  }, [accessToken, error, navigate]);
+  }, [isAuthenticated, accessToken, error, navigate]);
 
   function handleFormSubmit(e) {
     e.preventDefault();

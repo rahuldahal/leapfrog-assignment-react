@@ -42,10 +42,6 @@ export default function Landing({ history }) {
   }, [flashMessage]);
 
   useEffect(() => {
-    if (isAuthenticated) {
-      localStorage.setItem("accessToken", accessToken);
-      return navigate("contacts");
-    }
     if (error) {
       console.log(error);
       setFlashMessage({
@@ -53,7 +49,7 @@ export default function Landing({ history }) {
         message: error,
       });
     }
-  }, [isAuthenticated, accessToken, error, navigate]);
+  }, [error]);
 
   function handleFormSubmit(e) {
     e.preventDefault();

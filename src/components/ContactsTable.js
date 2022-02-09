@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Modal from "../Modal";
 import { deleteContactRequest } from "../redux/contacts/actions";
 import AddContactForm from "./AddContactForm";
@@ -8,6 +8,7 @@ import Button from "./Button";
 export default function ContactsTable({ headings, contacts, setFlashMessage }) {
   const dispatch = useDispatch();
   const [updateContactModalData, setUpdateContactModalData] = useState(null);
+  const { accessToken, refreshToken } = useSelector((state) => state.auth);
 
   function hideModalOnEscapePress(e) {
     if (e.key === "Escape") {
@@ -24,9 +25,7 @@ export default function ContactsTable({ headings, contacts, setFlashMessage }) {
   }, [updateContactModalData]);
 
   async function handleDelete(_id) {
-    const accessToken = localStorage.getItem("accessToken");
-    const parsedToken = JSON.parse(accessToken);
-    await dispatch(deleteContactRequest({ _id, token: parsedToken }));
+    await dispatch(deleteContactRequest({ _id, accessToken, refreshToken }));
     setFlashMessage({
       type: "success",
       message: "The contact has been deleted successfully",

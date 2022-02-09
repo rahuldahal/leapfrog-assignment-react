@@ -12,6 +12,7 @@ export default function AddContactForm({ data = {}, setFlashMessage }) {
   const [nameRef, NameField] = useField("Full Name");
   const [phoneRef, PhoneField] = useField("Phone Number");
   const [photographRef, PhotographField] = useField("Photograph URL");
+  const { accessToken, refreshToken } = useSelector((state) => state.auth);
   const { isLoading, error } = useSelector((state) => state.contacts);
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const dispatch = useDispatch();
@@ -46,8 +47,6 @@ export default function AddContactForm({ data = {}, setFlashMessage }) {
     const phone = phoneRef.current.value;
     const photograph = photographRef.current.value;
     console.log({ name, phone, photograph });
-    const accessToken = localStorage.getItem("accessToken");
-    const parsedToken = JSON.parse(accessToken);
 
     if (isDataProvided) {
       await dispatch(
@@ -56,12 +55,19 @@ export default function AddContactForm({ data = {}, setFlashMessage }) {
           name,
           phone,
           photograph,
-          token: parsedToken,
+          accessToken,
+          refreshToken,
         })
       );
     } else {
       await dispatch(
-        newContactRequest({ name, phone, photograph, token: parsedToken })
+        newContactRequest({
+          name,
+          phone,
+          photograph,
+          accessToken,
+          refreshToken,
+        })
       );
     }
     setIsFormSubmitted(true);

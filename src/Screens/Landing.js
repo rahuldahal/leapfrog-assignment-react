@@ -29,7 +29,7 @@ export default function Landing({ history }) {
     } catch (error) {
       console.log(error.message);
     }
-  }, [accessToken, refreshToken, dispatch]);
+  }, []);
 
   useEffect(() => {
     isAuthenticated && navigate("contacts");

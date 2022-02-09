@@ -17,10 +17,10 @@ function addTokensToLocalStorage({ accessToken, refreshToken }) {
 export default function authReducer(state = initialState, action) {
   const { signUp, signIn, status } = authTypes;
   const { payload } = action;
-  const { accessToken, refreshToken } = payload || {};
   switch (action.type) {
     case signUp.success:
     case signIn.success:
+      const { accessToken, refreshToken } = payload;
       addTokensToLocalStorage({ accessToken, refreshToken });
       return {
         ...state,
@@ -38,16 +38,19 @@ export default function authReducer(state = initialState, action) {
         error: payload,
       };
     case status.success:
-      let newPairOfTokens = {};
-      if (accessToken && refreshToken) {
-        newPairOfTokens = { accessToken, refreshToken };
-        addTokensToLocalStorage({ accessToken, refreshToken });
+      const { updatedAccessToken, updatedRefreshToken } = payload;
+      if (updatedAccessToken && updatedRefreshToken) {
+        addTokensToLocalStorage({
+          accessToken: updatedAccessToken,
+          refreshToken: updatedRefreshToken,
+        });
       }
       return {
         ...state,
         isLoading: true,
         isAuthenticated: true,
-        ...newPairOfTokens,
+        accessToken: updatedAccessToken,
+        refreshToken: updatedRefreshToken,
       };
     case status.failure:
       return {

@@ -1,12 +1,14 @@
 import { checkAuthStatusRequest, signIn, signUp } from "../services/fetch";
 import authTypes from "./types";
 
-export function checkAuthStatus({ accessToken }) {
+export function checkAuthStatus({ accessToken, refreshToken }) {
   return async (dispatch) => {
-    const status = await checkAuthStatusRequest({ accessToken });
-    console.log({ status });
+    const { status, updatedAccessToken, updatedRefreshToken } =
+      await checkAuthStatusRequest({ accessToken, refreshToken });
     if (status === 200) {
-      return dispatch(checkAuthStatusSuccess("success"));
+      return dispatch(
+        checkAuthStatusSuccess({ updatedAccessToken, updatedRefreshToken })
+      );
     }
     return dispatch(checkAuthStatusFailure("error"));
   };
@@ -16,7 +18,7 @@ function checkAuthStatusSuccess(payload) {
   console.log({ payload });
   return {
     type: authTypes.status.success,
-    payload: {},
+    payload,
   };
 }
 

@@ -16,7 +16,7 @@ export default function Landing({ history }) {
   const [formType, setFormType] = useState("signIn");
   const [emailRef, EmailField] = useField("Email Address");
   const [passwordRef, PasswordField] = useField("Password");
-  const { isAuthenticated, accessToken, error } = useSelector(
+  const { isAuthenticated, accessToken, refreshToken, error } = useSelector(
     (state) => state.auth
   );
   const [flashMessage, setFlashMessage] = useState(null);
@@ -24,13 +24,12 @@ export default function Landing({ history }) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(accessToken);
     try {
-      accessToken && dispatch(checkAuthStatus({ accessToken }));
+      accessToken && dispatch(checkAuthStatus({ accessToken, refreshToken }));
     } catch (error) {
       console.log(error.message);
     }
-  }, [accessToken, dispatch]);
+  }, [accessToken, refreshToken, dispatch]);
 
   useEffect(() => {
     isAuthenticated && navigate("contacts");

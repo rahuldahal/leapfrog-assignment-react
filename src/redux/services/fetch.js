@@ -8,13 +8,31 @@ function authHeader(accessToken) {
   };
 }
 
-export async function checkAuthStatusRequest({ accessToken }) {
+export async function checkAuthStatusRequest({ accessToken, refreshToken }) {
   try {
     const responseForAccessToken = await fetch(endPoint("/auth"), {
       headers: authHeader(accessToken),
     });
     const { status } = responseForAccessToken;
-    return status;
+    if (status === 401) {
+      const responseForRefreshToken = await fetch(endPoint("/refresh"), {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ refreshToken }),
+      });
+      const { message } = await responseForRefreshToken.json();
+      const {
+        accessToken: updatedAccessToken,
+        refreshToken: updatedRefreshToken,
+      } = message;
+      return {
+        status: responseForRefreshToken.status,
+        updatedAccessToken,
+        updatedRefreshToken,
+      };
+    } else {
+      return { status };
+    }
   } catch (error) {
     console.log(error);
   }
